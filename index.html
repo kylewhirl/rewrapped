@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rewrapped — Auto‑updating Spotify playlists</title>
+  <meta name="description" content="Rewrapped turns your listening history into fresh, auto-updating Spotify playlists—short term to all-time—with one tap.">
+  <meta property="og:title" content="Rewrapped">
+  <meta property="og:description" content="Auto‑updating Spotify playlists from your listening history.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#111827">
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --bg-hi: #111827;
+      --fg: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #22d3ee; /* cyan-400 */
+      --accent-2: #a78bfa; /* violet-400 */
+      --card: #111318;
+      --border: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+      color: var(--fg);
+      background: radial-gradient(1200px 900px at 80% -10%, rgba(34,211,238,.25), transparent 50%),
+                  radial-gradient(1000px 800px at -10% -10%, rgba(167,139,250,.2), transparent 40%),
+                  linear-gradient(180deg, var(--bg-hi), var(--bg));
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 56px; }
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); }
+    .brand-logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center; font-weight: 800; color: #0b0c10;
+    }
+    .brand-name { font-weight: 700; letter-spacing: .2px; }
+    .nav-actions a { color: var(--fg); text-decoration: none; margin-left: 14px; font-size: .95rem; opacity: .9; }
+    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; margin-top: 60px; }
+    .hero h1 { font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1.1; margin: 0 0 12px; }
+    .hero p.lede { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.15rem); margin: 0 0 22px; }
+    .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      appearance: none; border: 1px solid var(--border); color: #0b0c10; background: var(--fg);
+      padding: 12px 16px; border-radius: 12px; text-decoration: none; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn.secondary { background: transparent; color: var(--fg); }
+    .btn .icon { width: 18px; height: 18px; display: inline-block; }
+    .card { background: rgba(17,19,24,.6); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+    .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 28px; }
+    .features .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .features .card p { margin: 0; color: var(--muted); font-size: .95rem; }
+    .preview { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border: 1px solid var(--border); border-radius: 16px; height: 360px; display: grid; place-items: center; color: var(--muted); }
+    footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: .95rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .tiny { font-size: .9rem; }
+    @media (max-width: 880px) {
+      .hero { grid-template-columns: 1fr; margin-top: 36px; }
+      .features { grid-template-columns: 1fr; }
+      .preview { height: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#">
+        <div class="brand-logo">R</div>
+        <div class="brand-name">Rewrapped</div>
+      </a>
+      <div class="nav-actions tiny">
+        <a href="#features">Features</a>
+        <a href="rewrapped-privacy.html">Privacy</a>
+        <a href="#download">Download</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <h1>Auto‑updating Spotify playlists from your listening history</h1>
+        <p class="lede">Rewrapped builds smart playlists—short term to all‑time—and keeps them fresh. Update with one tap.</p>
+        <div class="cta">
+          <a class="btn" id="download" href="#" aria-label="Download on the App Store">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c.06.76-.223 1.52-.69 2.11-.48.6-1.29 1.06-2.07.99-.07-.75.24-1.52.7-2.11.48-.62 1.31-1.07 2.06-.99zm3.02 15.92c-.41.92-.9 1.83-1.58 2.64-.8.94-1.83 2.11-3.16 2.11-1.38.02-1.75-.67-3.26-.67-1.53 0-1.92.66-3.29.69-1.34.03-2.36-1.02-3.19-1.96-1.74-2.01-3.08-5.68-1.28-8.17.9-1.24 2.33-2.02 3.86-2.05 1.34-.03 2.6.71 3.25.71.63 0 2.23-.88 3.77-.75.64.03 2.46.26 3.63 1.96-.09.06-2.16 1.26-2.13 3.75.03 3 2.64 4 2.68 4.04z"/></svg>
+            App Store
+          </a>
+          <a class="btn secondary" href="rewrapped-privacy.html">Privacy Policy</a>
+        </div>
+
+        <div id="features" class="features">
+          <div class="card">
+            <h3>One‑tap updates</h3>
+            <p>Sync fresh top tracks whenever you like—no manual curation.</p>
+          </div>
+          <div class="card">
+            <h3>Four timeframes</h3>
+            <p>Short, medium, long term & all‑time playlists—enable any combo.</p>
+          </div>
+          <div class="card">
+            <h3>Clean covers</h3>
+            <p>Artwork is optimized to Spotify’s requirements automatically.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview">
+        <div class="tiny">App preview goes here</div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© 2025 Rewrapped</div>
+      <div class="tiny">Not affiliated with Spotify.</div>
+    </footer>
+  </div>
+</body>
+</html>
