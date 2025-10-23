@@ -3,118 +3,669 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Rewrapped — Auto‑updating Spotify playlists</title>
-  <meta name="description" content="Rewrapped turns your listening history into fresh, auto-updating Spotify playlists—short term to all-time—with one tap.">
+  <title>Rewrapped — Spotify playlists that update themselves</title>
+  <meta name="description" content="Rewrapped connects to Spotify and keeps four smart playlists—short, medium, long term and all-time—updated automatically from your listening history.">
   <meta property="og:title" content="Rewrapped">
-  <meta property="og:description" content="Auto‑updating Spotify playlists from your listening history.">
+  <meta property="og:description" content="Connect once. Get four Spotify playlists that refresh themselves from your listening history.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#111827">
+  <link rel="icon" type="image/svg+xml" href="assets/rewrapped-icon.svg">
   <style>
     :root {
-      --bg: #0b0c10;
+      --bg: #06070c;
       --bg-hi: #111827;
-      --fg: #e5e7eb;
+      --fg: #f9fafb;
       --muted: #9ca3af;
-      --accent: #22d3ee; /* cyan-400 */
-      --accent-2: #a78bfa; /* violet-400 */
-      --card: #111318;
-      --border: #1f2937;
+      --muted-strong: #cbd5f5;
+      --accent: #38f8b6;
+      --accent-2: #3dd9f5;
+      --accent-soft: rgba(61, 217, 245, 0.2);
+      --card: rgba(17, 24, 39, 0.55);
+      --card-border: rgba(148, 163, 184, 0.18);
     }
+
     * { box-sizing: border-box; }
+
     html, body { height: 100%; }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Helvetica Neue", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       color: var(--fg);
-      background: radial-gradient(1200px 900px at 80% -10%, rgba(34,211,238,.25), transparent 50%),
-                  radial-gradient(1000px 800px at -10% -10%, rgba(167,139,250,.2), transparent 40%),
-                  linear-gradient(180deg, var(--bg-hi), var(--bg));
+      background:
+        radial-gradient(1200px 900px at 85% -10%, rgba(61, 217, 245, .18), transparent 55%),
+        radial-gradient(900px 900px at -5% -20%, rgba(56, 248, 182, .16), transparent 50%),
+        linear-gradient(180deg, var(--bg-hi), var(--bg));
     }
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 56px; }
-    nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); }
+
+    a { color: inherit; }
+
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 72px; }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+
     .brand-logo {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      display: grid; place-items: center; font-weight: 800; color: #0b0c10;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      box-shadow: 0 18px 40px rgba(61, 217, 245, 0.22);
+      overflow: hidden;
+      display: inline-grid;
     }
-    .brand-name { font-weight: 700; letter-spacing: .2px; }
-    .nav-actions a { color: var(--fg); text-decoration: none; margin-left: 14px; font-size: .95rem; opacity: .9; }
-    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; margin-top: 60px; }
-    .hero h1 { font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1.1; margin: 0 0 12px; }
-    .hero p.lede { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.15rem); margin: 0 0 22px; }
-    .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .brand-logo img { width: 100%; height: 100%; display: block; }
+
+    .nav-actions a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: .95rem;
+      transition: color .2s ease;
+    }
+
+    .nav-actions a:hover,
+    .nav-actions a:focus {
+      color: var(--fg);
+    }
+
+    main { margin-top: 36px; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap: 52px;
+      align-items: center;
+      margin-top: 44px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .4em;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.35rem, 5vw, 3.4rem);
+      line-height: 1.08;
+      margin: 0 0 18px;
+    }
+
+    .hero .lede {
+      margin: 0 0 22px;
+      color: var(--muted-strong);
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      line-height: 1.55;
+    }
+
+    .hero .cta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
     .btn {
-      appearance: none; border: 1px solid var(--border); color: #0b0c10; background: var(--fg);
-      padding: 12px 16px; border-radius: 12px; text-decoration: none; font-weight: 600;
-      display: inline-flex; align-items: center; gap: 10px;
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
     }
-    .btn.secondary { background: transparent; color: var(--fg); }
-    .btn .icon { width: 18px; height: 18px; display: inline-block; }
-    .card { background: rgba(17,19,24,.6); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
-    .features { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 28px; }
-    .features .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
-    .features .card p { margin: 0; color: var(--muted); font-size: .95rem; }
-    .preview { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border: 1px solid var(--border); border-radius: 16px; height: 360px; display: grid; place-items: center; color: var(--muted); }
-    footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: .95rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-    .tiny { font-size: .9rem; }
-    @media (max-width: 880px) {
-      .hero { grid-template-columns: 1fr; margin-top: 36px; }
-      .features { grid-template-columns: 1fr; }
-      .preview { height: 240px; }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(61, 217, 245, 0.25);
+    }
+
+    .btn.app-store {
+      background: linear-gradient(135deg, #f8fafc, #dbeafe);
+      color: #050608;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: var(--fg);
+    }
+
+    .btn svg { width: 20px; height: 20px; }
+
+    .cta-note {
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    .timeframe-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 26px 0 0;
+    }
+
+    .badge {
+      background: rgba(61, 217, 245, 0.14);
+      border: 1px solid rgba(61, 217, 245, 0.4);
+      color: var(--fg);
+      font-size: .85rem;
+      padding: 7px 13px;
+      border-radius: 999px;
+      letter-spacing: .3px;
+    }
+
+    .hero-preview {
+      position: relative;
+    }
+
+    .hero-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 26px;
+      box-shadow: 0 18px 45px rgba(61, 217, 245, 0.28);
+      margin-bottom: 18px;
+    }
+
+    .preview-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(10, 12, 18, 0.12));
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+
+    .preview-card::after {
+      content: "";
+      position: absolute;
+      inset: -120px -80px auto auto;
+      width: 240px;
+      height: 240px;
+      background: radial-gradient(circle at top right, rgba(61,217,245,0.22), transparent 60%);
+      opacity: .9;
+      pointer-events: none;
+    }
+
+    .playlist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .playlist-card {
+      background: var(--card);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .playlist-head {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .playlist-title {
+      font-weight: 600;
+      letter-spacing: .4px;
+    }
+
+    .playlist-meta {
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .tracks {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted-strong);
+      font-size: .9rem;
+      display: grid;
+      gap: 4px;
+    }
+
+    .tracks li::marker {
+      color: rgba(61, 217, 245, 0.7);
+      font-weight: 600;
+    }
+
+    section + section { margin-top: 80px; }
+
+    .section-heading {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      margin: 0 0 18px;
+    }
+
+    .section-lede {
+      color: var(--muted-strong);
+      font-size: 1.05rem;
+      margin: 0 0 32px;
+      line-height: 1.6;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .feature-card h3 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      counter-reset: step;
+    }
+
+    .step {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(6, 8, 12, 0.12));
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 20px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(61, 217, 245, 0.18);
+      color: var(--fg);
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    .step h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .automation {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 32px;
+      background: rgba(61, 217, 245, 0.08);
+      border: 1px solid rgba(61, 217, 245, 0.3);
+      border-radius: 26px;
+      padding: 32px;
+      align-items: center;
+    }
+
+    .automation h3 {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+    }
+
+    .automation p {
+      margin: 0 0 12px;
+      color: var(--muted-strong);
+      line-height: 1.6;
+    }
+
+    .automation ol {
+      margin: 0;
+      padding-left: 22px;
+      color: var(--muted);
+      line-height: 1.55;
+      display: grid;
+      gap: 6px;
+    }
+
+    .automation-card {
+      background: rgba(17, 24, 39, 0.65);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: inset 0 0 0 1px rgba(61, 217, 245, 0.12);
+    }
+
+    .automation-card h4 {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+    }
+
+    .automation-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.55;
+      display: grid;
+      gap: 6px;
+    }
+
+    .final-cta {
+      margin-top: 86px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(61, 217, 245, 0.16), rgba(17, 24, 39, 0.2));
+      border: 1px solid rgba(61, 217, 245, 0.28);
+      border-radius: 28px;
+      padding: 44px 32px;
+      display: grid;
+      gap: 18px;
+      place-items: center;
+    }
+
+    .final-cta h2 {
+      margin: 0;
+      font-size: clamp(2rem, 3.5vw, 2.6rem);
+    }
+
+    .final-cta p {
+      margin: 0;
+      color: var(--muted-strong);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    footer {
+      margin-top: 72px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(148, 163, 184, 0.14);
+      color: var(--muted);
+      font-size: .92rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover,
+    footer a:focus {
+      color: var(--fg);
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-preview {
+        order: -1;
+      }
+
+      .automation {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 780px) {
+      .features-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      nav { flex-direction: column; align-items: flex-start; }
+      .nav-actions { width: 100%; display: flex; gap: 12px; flex-wrap: wrap; }
+      .nav-actions a { margin: 0; }
+      .playlist-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; }
+      section + section { margin-top: 64px; }
+      .final-cta { padding: 40px 24px; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <nav>
-      <a class="brand" href="#">
-        <div class="brand-logo">R</div>
-        <div class="brand-name">Rewrapped</div>
+      <a class="brand" href="#top">
+        <span class="brand-logo"><img src="assets/rewrapped-icon.svg" alt="Rewrapped app icon"></span>
+        <span>Rewrapped</span>
       </a>
-      <div class="nav-actions tiny">
+      <div class="nav-actions">
         <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#automation">Automation</a>
         <a href="/privacy">Privacy</a>
         <a href="#download">Download</a>
       </div>
     </nav>
 
-    <section class="hero">
-      <div>
-        <h1>Auto‑updating Spotify playlists from your listening history</h1>
-        <p class="lede">Rewrapped builds smart playlists—short term to all‑time—and keeps them fresh. Update with one tap.</p>
-        <div class="cta">
-          <a class="btn" id="download" href="#" aria-label="Download on the App Store">
-            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.365 1.43c.06.76-.223 1.52-.69 2.11-.48.6-1.29 1.06-2.07.99-.07-.75.24-1.52.7-2.11.48-.62 1.31-1.07 2.06-.99zm3.02 15.92c-.41.92-.9 1.83-1.58 2.64-.8.94-1.83 2.11-3.16 2.11-1.38.02-1.75-.67-3.26-.67-1.53 0-1.92.66-3.29.69-1.34.03-2.36-1.02-3.19-1.96-1.74-2.01-3.08-5.68-1.28-8.17.9-1.24 2.33-2.02 3.86-2.05 1.34-.03 2.6.71 3.25.71.63 0 2.23-.88 3.77-.75.64.03 2.46.26 3.63 1.96-.09.06-2.16 1.26-2.13 3.75.03 3 2.64 4 2.68 4.04z"/></svg>
-            App Store
-          </a>
-          <a class="btn secondary" href="/privacy">Privacy Policy</a>
-        </div>
-
-        <div id="features" class="features">
-          <div class="card">
-            <h3>One‑tap updates</h3>
-            <p>Sync fresh top tracks whenever you like—no manual curation.</p>
+    <main id="top">
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Spotify companion app</div>
+          <h1>Your Spotify favorites, rewrapped every day</h1>
+          <p class="lede">Rewrapped connects to your Spotify account and turns your listening history into four living playlists. Short term, medium term, long term and all-time mixes refresh automatically so you always have the right vibe ready.</p>
+          <div class="cta">
+            <a class="btn app-store" href="https://apps.apple.com/us/app/rewrapped/id6754272094" target="_blank" rel="noopener" aria-label="Download Rewrapped on the App Store">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.537 1.372c.06.814-.24 1.618-.735 2.21-.48.597-1.302 1.063-2.043 1.003-.079-.78.249-1.639.735-2.219.522-.617 1.395-1.072 2.043-.994zm3.079 15.774c-.45 1.003-.981 1.975-1.728 2.864-.699.861-1.497 1.944-2.616 1.964-1.123.02-1.48-.64-2.82-.64-1.34 0-1.73.62-2.844.66-1.152.02-2.03-.933-2.737-1.794-1.878-2.243-3.331-6.344-1.352-9.148.933-1.363 2.591-2.234 4.392-2.255 1.152-.02 2.247.759 2.82.759.572 0 1.923-.935 3.282-.799.497.02 2.189.199 3.223 1.9-.08.06-1.923 1.123-1.904 3.344.02 2.652 2.38 3.548 2.398 3.568z"/></svg>
+              App Store
+            </a>
+            <a class="btn secondary" href="/privacy">Privacy Policy</a>
           </div>
-          <div class="card">
-            <h3>Four timeframes</h3>
-            <p>Short, medium, long term & all‑time playlists—enable any combo.</p>
-          </div>
-          <div class="card">
-            <h3>Clean covers</h3>
-            <p>Artwork is optimized to Spotify’s requirements automatically.</p>
+          <div class="cta-note">Tip: add Rewrapped to a daily Shortcut and the playlists stay fresh without lifting a finger.</div>
+          <div class="timeframe-badges">
+            <span class="badge">Short term · last 4 weeks</span>
+            <span class="badge">Medium term · last 6 months</span>
+            <span class="badge">Long term · last year</span>
+            <span class="badge">All-time · your forever favorites</span>
           </div>
         </div>
-      </div>
+        <div class="hero-preview">
+          <img class="hero-icon" src="assets/rewrapped-icon.svg" alt="Rewrapped app icon">
+          <div class="preview-card">
+            <div class="playlist-grid">
+              <div class="playlist-card">
+                <div class="playlist-head">
+                  <span class="playlist-title">Short Term Mix</span>
+                  <span class="playlist-meta">What you cannot stop replaying</span>
+                </div>
+                <ol class="tracks">
+                  <li>Midnight Drive</li>
+                  <li>Repeat on Repeat</li>
+                  <li>New Crush Anthem</li>
+                </ol>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-head">
+                  <span class="playlist-title">Medium Term Mix</span>
+                  <span class="playlist-meta">Seasonal standouts</span>
+                </div>
+                <ol class="tracks">
+                  <li>Slow Burn Groove</li>
+                  <li>Glowing Hour</li>
+                  <li>Festival Flashback</li>
+                </ol>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-head">
+                  <span class="playlist-title">Long Term Mix</span>
+                  <span class="playlist-meta">Your reliable go-tos</span>
+                </div>
+                <ol class="tracks">
+                  <li>Evergreen Echo</li>
+                  <li>Saturday Lift</li>
+                  <li>Skyline Stroll</li>
+                </ol>
+              </div>
+              <div class="playlist-card">
+                <div class="playlist-head">
+                  <span class="playlist-title">All-Time Favorites</span>
+                  <span class="playlist-meta">Your hall of fame</span>
+                </div>
+                <ol class="tracks">
+                  <li>First Spin</li>
+                  <li>Instant Classic</li>
+                  <li>Encore Forever</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div class="preview">
-        <div class="tiny">App preview goes here</div>
-      </div>
-    </section>
+      <section id="features">
+        <h2 class="section-heading">Made for Spotify super listeners</h2>
+        <p class="section-lede">Rewrapped uses Spotify’s official API to look at the same data behind Wrapped and your Top Songs playlists. Four curated mixes appear instantly—no copy-pasting tracks, no spreadsheets, no maintenance.</p>
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3>Authentic listening stats</h3>
+            <p>Connect securely with Spotify. Rewrapped reads your top tracks straight from Spotify so every playlist reflects what you actually play.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Four timeframes, zero effort</h3>
+            <p>Short, medium, long term and all-time playlists are generated automatically. Pick any mix or keep them all in sync.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Works with Apple Shortcuts</h3>
+            <p>Add a daily automation to refresh each playlist while you sleep. The next time you open Spotify, everything is already updated.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Designed for Spotify</h3>
+            <p>Playlist titles, covers and descriptions are optimized for Spotify so they blend right in with your library.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Privacy first</h3>
+            <p>Rewrapped only requests the permissions it needs to build playlists. You can revoke access from Spotify at any time.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Instant setup</h3>
+            <p>Launch the app, connect Spotify and tap once to generate everything. You’ll be listening to your new mixes in under a minute.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works">
+        <h2 class="section-heading">How Rewrapped keeps playlists fresh</h2>
+        <p class="section-lede">The app is intentionally simple. It focuses on building the perfect “wrapped” playlists for whenever you want a snapshot of your listening habits.</p>
+        <div class="steps">
+          <div class="step">
+            <h3>1. Connect Spotify</h3>
+            <p>Open Rewrapped and sign in with Spotify. We’ll ask for permission to view your top tracks and manage playlists on your behalf.</p>
+          </div>
+          <div class="step">
+            <h3>2. Generate playlists</h3>
+            <p>Choose the timeframes you want—short, medium, long term or all-time. Rewrapped instantly creates playlists with cover art and descriptions.</p>
+          </div>
+          <div class="step">
+            <h3>3. Refresh anytime</h3>
+            <p>Tap refresh in the app or let an automation do it for you. Each update clears the old tracks and fills the playlists with your latest top songs.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="automation" id="automation">
+        <div>
+          <h3>Keep everything on autopilot with Shortcuts</h3>
+          <p>Rewrapped supports the Shortcuts app out of the box. Create a personal automation that runs daily (or weekly) to regenerate your playlists without opening the app.</p>
+          <ol>
+            <li>Open the Shortcuts app &gt; Automation.</li>
+            <li>Create a Personal Automation that runs at your preferred time.</li>
+            <li>Add the “Run Rewrapped” action and choose “Refresh playlists”.</li>
+            <li>Turn off “Ask Before Running” so it happens automatically.</li>
+          </ol>
+        </div>
+        <div class="automation-card">
+          <h4>Pro tips</h4>
+          <ul>
+            <li>Schedule it overnight so Spotify is updated by the time you wake up.</li>
+            <li>Use Focus filters or widgets to jump right back into your playlists.</li>
+            <li>Pause the automation any time—your mixes stay right where you left them.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="final-cta" id="download">
+        <h2>Ready for a personal Wrapped, all year long?</h2>
+        <p>Join listeners who keep their top songs playlists up to date without any manual work. Download Rewrapped and let Spotify curate itself for you.</p>
+        <a class="btn app-store" href="https://apps.apple.com/us/app/rewrapped/id6754272094" target="_blank" rel="noopener" aria-label="Download Rewrapped on the App Store">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.537 1.372c.06.814-.24 1.618-.735 2.21-.48.597-1.302 1.063-2.043 1.003-.079-.78.249-1.639.735-2.219.522-.617 1.395-1.072 2.043-.994zm3.079 15.774c-.45 1.003-.981 1.975-1.728 2.864-.699.861-1.497 1.944-2.616 1.964-1.123.02-1.48-.64-2.82-.64-1.34 0-1.73.62-2.844.66-1.152.02-2.03-.933-2.737-1.794-1.878-2.243-3.331-6.344-1.352-9.148.933-1.363 2.591-2.234 4.392-2.255 1.152-.02 2.247.759 2.82.759.572 0 1.923-.935 3.282-.799.497.02 2.189.199 3.223 1.9-.08.06-1.923 1.123-1.904 3.344.02 2.652 2.38 3.548 2.398 3.568z"/></svg>
+          App Store
+        </a>
+      </section>
+    </main>
 
     <footer>
-      <div>© 2025 Rewrapped</div>
-      <div class="tiny">Not affiliated with Spotify.</div>
+      <div>© 2025 Rewrapped. Not affiliated with Spotify.</div>
+      <div>
+        <a href="mailto:hello@rewrapped.app">Support</a>
+        &nbsp;·&nbsp;
+        <a href="/privacy">Privacy</a>
+      </div>
     </footer>
   </div>
 </body>

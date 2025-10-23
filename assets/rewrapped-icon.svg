@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Rewrapped app icon</title>
+  <defs>
+    <linearGradient id="giftGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e2ff7d" />
+      <stop offset="28%" stop-color="#b6fa69" />
+      <stop offset="58%" stop-color="#64f4a9" />
+      <stop offset="100%" stop-color="#3dd9f5" />
+    </linearGradient>
+    <linearGradient id="waveGradient" x1="0%" y1="20%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#42b7f3" stop-opacity="0.65" />
+      <stop offset="50%" stop-color="#37d8b0" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#4df670" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="shine" x1="30%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(32 32)">
+    <path fill="url(#giftGradient)" d="M184 128c-40 0-80-36-80-80C104 20 132 0 164 0c38 0 68 24 92 80 24-56 54-80 92-80 32 0 60 20 60 48 0 44-40 80-80 80h-56v32h112c35 0 64 29 64 64v192c0 35-29 64-64 64H96c-35 0-64-29-64-64V224c0-35 29-64 64-64h112v-32h-24z"/>
+    <path fill="#d8ffe0" fill-opacity="0.75" d="M208 128h96v288h-96z"/>
+    <path fill="#d8ffe0" fill-opacity="0.75" d="M32 272h416v64H32z"/>
+    <path fill="url(#waveGradient)" d="M32 176c48 40 112 64 176 60 80-4 96-44 176-56 60-10 88 6 108 26v52c-20-22-52-38-108-28-80 12-96 52-176 56-64 4-128-16-176-52z"/>
+    <path fill="url(#shine)" d="M48 112c40 40 120 64 208 48 80-16 120-52 144-104v144c-36-28-84-36-144-24-92 20-172 0-208-40z"/>
+  </g>
+</svg>
