@@ -12,9 +12,9 @@ Rewrapped lets you track your top Spotify songs across short, medium, and longâ€
 
 <p align="center">
   <a href="https://apps.apple.com/us/app/rewrapped/id6754272094">
-    <img src="https://rewrapped.kylewhirl.com/app-store.png" alt="Download on the App Store" width="20">
+    <img src="https://rewrapped.kylewhirl.com/app-store.png" alt="Download on the App Store" width="15">
+    Download on the App Store
   </a>
-  Download on the App Store
 </p>
 
 ---
