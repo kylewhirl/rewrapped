@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   description:
     "Get personalized Spotify playlists that update year-round. Track your music taste with Short, Medium, and Long Term playlists.",
   generator: "v0.app",
+  other: {
+    "apple-itunes-app": "app-id=6754272094",
+  },
   icons: {
     icon: [
       { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
