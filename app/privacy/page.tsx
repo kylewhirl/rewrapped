@@ -29,6 +29,9 @@ export default function LandingPage() {
               <li>We do <strong>not</strong> run a backend that collects your personal data. Tokens are stored securely on your device (Keychain).</li>
               <li>Your playlist artwork is processed on-device and uploaded directly to Spotify when you choose to sync.</li>
               <li>We do not sell or share your data with third parties for advertising.</li>
+              {/* NEW */}
+              <li><strong>Third-party collection:</strong> Spotify may collect limited analytics about the connection (e.g., number of connections to Rewrapped and the country where they occur). We only see aggregated, non-identifiable statistics. See <a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noreferrer" className="underline text-foreground">Spotify’s Privacy Policy</a>.</li>
+              <li>We do not use tracking technologies or display advertising.</li>
             </ul>
           </section>
 
@@ -40,6 +43,18 @@ export default function LandingPage() {
               <li>Your top tracks and related metadata in selected timeframes, to build and update playlists.</li>
               <li>Playlist details you own or collaborate on, to create, rename, update descriptions, replace tracks, add tracks, and set artwork.</li>
             </ul>
+          </section>
+
+          {/* NEW: Scopes section */}
+          <section>
+            <h2 className="text-xl font-semibold mt-7">Permissions (Scopes) We Request</h2>
+            <p className="mt-2">For transparency, the App may request these Spotify scopes:</p>
+            <ul className="list-disc pl-6 mt-2 space-y-1">
+              <li><code>playlist-modify-public</code>, <code>playlist-modify-private</code>, <code>playlist-read-private</code>, <code>playlist-read-collaborative</code>, <code>ugc-image-upload</code>, <code>user-read-private</code>, <code>user-top-read</code></li>
+            </ul>
+            <p className="text-sm text-muted-foreground mt-2">
+              Granting a scope lets the App call the corresponding Spotify endpoint to fulfill your request. Granting a scope does not mean we store data; we don’t.
+            </p>
           </section>
 
           <section>
@@ -61,6 +76,15 @@ export default function LandingPage() {
             </ul>
           </section>
 
+          {/* NEW: Third-party collection clarification */}
+          <section>
+            <h2 className="text-xl font-semibold mt-7">Third-Party Collection (Spotify)</h2>
+            <p className="mt-2">
+              We do not collect or store personal data and we do not operate servers for this App. When you connect your Spotify account, Spotify may collect and process information under its own policies—for example, usage analytics and coarse location (country) related to connections with Rewrapped. We receive only aggregated, non-identifiable statistics (e.g., total connections and countries) and no user emails, usernames, or listening histories. See&nbsp;
+              <a href="https://www.spotify.com/legal/privacy-policy/" target="_blank" rel="noreferrer" className="underline text-foreground">Spotify’s Privacy Policy</a>.
+            </p>
+          </section>
+
           <section>
             <h2 className="text-xl font-semibold mt-7">Data Sharing</h2>
             <p className="mt-2">
@@ -76,6 +100,8 @@ export default function LandingPage() {
               </a>
               .
             </p>
+            {/* NEW: small clarification */}
+            <p className="text-sm text-muted-foreground mt-2">No third-party advertising SDKs are used. We do not engage in cross-app tracking.</p>
           </section>
 
           <section>
